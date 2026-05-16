@@ -146,9 +146,13 @@ def save_to_csv(headers, data, filename):
 
 
 def main():
-    month = "04"
-    start_date = "20260401"
-    end_date = "20260430"
+    if len(sys.argv) != 3:
+        print(f"Usage: {sys.argv[0]} <start_date> <end_date>", file=sys.stderr)
+        print("  Dates in YYYYMMDD format, e.g. 20260401 20260430", file=sys.stderr)
+        sys.exit(1)
+
+    start_date = sys.argv[1]
+    end_date = sys.argv[2]
 
     print(f"Fetching weather data for station {STATION_ID} ...")
     print(f"Date range: {start_date} to {end_date}")
@@ -158,7 +162,7 @@ def main():
     print("Parsing weather data...")
     headers, data = parse_weather_data(json_data)
 
-    output_filename = f"weather_data_2026_{month}.csv"
+    output_filename = f"weather_data_{start_date}_{end_date}.csv"
     print(f"Saving data to {output_filename}...")
     save_to_csv(headers, data, output_filename)
 
