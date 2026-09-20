@@ -4,17 +4,38 @@ Weather Underground Data Scraper (Simple API Version)
 Downloads weather data from Weather Underground API and saves to CSV
 """
 
+import configparser
 import csv
 import os
 import sys
 import requests
 
 from datetime import datetime
+from pathlib import Path
 
 
 API_URL = "https://api.weather.com/v2/pws/history/daily"
-API_KEY = os.getenv("WU_API_KEY")
-STATION_ID = os.getenv("WU_STATION_ID")
+CONFIG_PATH = os.path.join(Path.home(), ".config", "wu-download.conf")
+CONFIG_SECTION = "wu-download"
+
+
+def load_config():
+    """Load API_KEY and STATION_ID from the config file.
+
+    The config file at $HOME/.config/wu-download.conf takes precedence.
+    If it doesn't exist, fall back to the WU_API_KEY / WU_STATION_ID
+    environment variables.
+    """
+    if os.path.exists(CONFIG_PATH):
+        parser = configparser.ConfigParser()
+        parser.read(CONFIG_PATH)
+        section = parser[CONFIG_SECTION]
+        return section.get("API_KEY"), section.get("STATION_ID")
+
+    return os.getenv("WU_API_KEY"), os.getenv("WU_STATION_ID")
+
+
+API_KEY, STATION_ID = load_config()
 
 
 def fetch_weather_data(station_id, start_date, end_date, api_key):
