@@ -29,6 +29,26 @@ Or simply:
 pip install requests
 ```
 
+## Configuration
+
+The scraper reads the API key and station ID from a configuration file at
+`$HOME/.config/wu-download.conf`. The file uses INI format with a
+`[wu-download]` section:
+
+```ini
+[wu-download]
+API_KEY = your_api_key
+STATION_ID = your_station_id
+```
+
+If the configuration file does not exist, the scraper falls back to the
+`WU_API_KEY` and `WU_STATION_ID` environment variables:
+
+```bash
+export WU_API_KEY="your_api_key"
+export WU_STATION_ID="your_station_id"
+```
+
 ## Usage
 
 Run the scraper:
@@ -72,12 +92,14 @@ Columns include:
 
 ## Customization
 
-To scrape data from a different station or date range, modify the variables in the `main()` function of `weather_scraper.py`:
+To scrape data from a different station, update the `STATION_ID` value in your
+configuration file (see [Configuration](#configuration)).
 
-```python
-station_id = "IDALEI13"      # Change to your station ID
-start_date = "20260401"      # YYYYMMDD format
-end_date = "20260430"        # YYYYMMDD format
+To scrape a different date range, pass the start and end dates as command-line
+arguments in `YYYYMMDD` format:
+
+```bash
+python3 weather_scraper.py 20260401 20260430
 ```
 
 ## How It Works
