@@ -102,6 +102,18 @@ arguments in `YYYYMMDD` format:
 python3 weather_scraper.py 20260401 20260430
 ```
 
+## Plotting
+
+`plot_weather.py` reads a CSV file produced by the scraper and generates a chart
+of temperature, dew point, humidity, wind speed, pressure, and precipitation.
+
+```bash
+python3 plot_weather.py <csv_file> [output.png]
+```
+
+If no output file is given, the plot is saved next to the CSV file with a `.png`
+extension. Requires the `matplotlib` library.
+
 ## How It Works
 
 Instead of scraping HTML, this app uses the official Weather Underground API endpoint that the website itself uses. This is much faster, simpler, and more reliable than browser automation.
